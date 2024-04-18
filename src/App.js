@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './app.module.css';
 import { TodoList } from './components/TodoList';
-import { TodoAdd } from './components/TodoAdd';
+import { TodoAdd } from './components/TodoAddItem';
 import {
   useRequestAdd,
   useRequestUpdate,
@@ -14,8 +14,10 @@ function App() {
 
   const refreshTodos = () => setRefreshTodosFlag(!refreshTodosFlag);
 
-  const {isLoading, todos} = useRequestGet(refreshTodosFlag);
-  const {isCreating, requestAdd} = useRequestAdd(refreshTodos);
+  const { isLoading, todos } = useRequestGet(refreshTodosFlag);
+  const { isCreating, requestAdd } = useRequestAdd(refreshTodos);
+  const { isUpdating, requestUpdate } = useRequestUpdate(refreshTodos);
+  const { isDeleting, requestDelete } = useRequestDelete(refreshTodos);
 
   // JSON Placeholder
   // useEffect(() => {
@@ -37,14 +39,26 @@ function App() {
     console.log(event);
     requestAdd(event.target[1].value);
     event.target[1].value = '';
-  }
+  };
+
+  const handleUpdateTodo = (id, text) => {
+    requestUpdate(id, text);
+  };
+
+  const handleDeleteTodo = (id) => {
+    requestDelete(id);
+  };
 
   return (
     <div className={styles.app}>
       <div>
         <h1>Todo list</h1>
         <TodoAdd handleAddTodo={handleAddTodo} />
-        <TodoList todos={todos} />
+        <TodoList
+          todos={todos}
+          handleDeleteTodo={handleDeleteTodo}
+          handleUpdateTodo={handleUpdateTodo}
+        />
       </div>
     </div>
   );

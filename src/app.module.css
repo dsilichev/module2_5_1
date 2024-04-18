@@ -11,3 +11,9 @@
   list-style: none;
   gap: 10px;
 }
+
+.list li {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+}
