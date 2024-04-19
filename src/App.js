@@ -54,7 +54,9 @@ function App() {
       <div>
         <h1>Todo list</h1>
         <TodoAdd handleAddTodo={handleAddTodo} />
+
         <TodoList
+          isLoading={isLoading}
           todos={todos}
           handleDeleteTodo={handleDeleteTodo}
           handleUpdateTodo={handleUpdateTodo}
