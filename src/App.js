@@ -14,7 +14,7 @@ function App() {
 
   const refreshTodos = () => setRefreshTodosFlag(!refreshTodosFlag);
 
-  const { isLoading, todos } = useRequestGet(refreshTodosFlag);
+  const { isLoading, todos, setTodos } = useRequestGet(refreshTodosFlag);
   const { isCreating, requestAdd } = useRequestAdd(refreshTodos);
   const { isUpdating, requestUpdate } = useRequestUpdate(refreshTodos);
   const { isDeleting, requestDelete } = useRequestDelete(refreshTodos);
@@ -52,12 +52,13 @@ function App() {
   return (
     <div className={styles.app}>
       <div>
-        <h1>Todo list</h1>
-        <TodoAdd handleAddTodo={handleAddTodo} />
+        <h1>Todo list {isLoading.toString()}</h1>
+        <TodoAdd handleAddTodo={handleAddTodo} isCreating={isCreating} />
 
         <TodoList
           isLoading={isLoading}
           todos={todos}
+          setTodos={setTodos}
           handleDeleteTodo={handleDeleteTodo}
           handleUpdateTodo={handleUpdateTodo}
         />

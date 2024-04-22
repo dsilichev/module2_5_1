@@ -1,10 +1,10 @@
 import styles from '../app.module.css';
 
-export const TodoAdd = ({ handleAddTodo }) => {
+export const TodoAdd = ({ handleAddTodo, isCreating }) => {
   return (
     <div>
       <form onSubmit={handleAddTodo}>
-        <button>+</button>
+        <button disabled={isCreating}>+</button>
         <input placeholder='add new task'></input>
       </form>
     </div>

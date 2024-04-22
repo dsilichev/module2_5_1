@@ -10,11 +10,12 @@ export const useRequestGet = (refreshTodosFlag) => {
     fetch('http://localhost:3005/todos')
       .then((response) => response.json())
       .then((json) => setTodos([...json]))
-      .finally(setIsLoading(false));
+      .finally(() => setIsLoading(false));
   }, [refreshTodosFlag]);
 
   return {
     isLoading,
-    todos
+    todos,
+    setTodos,
   }
 }
