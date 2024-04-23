@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from '../app.module.css';
+import _ from 'lodash';
 
 export const TodoList = ({
   isLoading,
@@ -7,11 +8,15 @@ export const TodoList = ({
   setTodos,
   handleDeleteTodo,
   handleUpdateTodo,
+  refreshTodos,
 }) => {
   const [updatingId, setUpdatingId] = useState('');
-  //handleUpdateTodo(todo.id, todo.text)
+  const [sortSign, setSortSign] = useState('asc');
+  const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
+  const [isActiveSearchField, setIsActiveSearcField] = useState(false);
+  const [inputSearchValue, setInputSearchValue] = useState('');
 
-  const handleUpdate = (id, text) => {
+  const handleUpdateField = (id, text) => {
     if (id === updatingId) {
       handleUpdateTodo(id, text);
       setUpdatingId('');
@@ -27,8 +32,60 @@ export const TodoList = ({
     console.log(text);
   };
 
+  const sortTodos = () => {
+    setSortBy((prevState) => {
+      if (prevState.order === 'desc') {
+        return { ...prevState, order: 'asc' };
+      } else {
+        return { ...prevState, order: 'desc' };
+      }
+    });
+    const sortedTodos = _.orderBy(todos, [sortBy.path], [sortBy.order]);
+    setTodos([...sortedTodos]);
+  };
+
+  const searchTodo = () => {
+    if (inputSearchValue) {
+      setTimeout(() => {
+        const newTodos = _.filter(todos, (todo) =>
+          todo.text.toLowerCase().includes(inputSearchValue.toLowerCase()),
+        );
+        setTodos([...newTodos]);
+      }, 300);
+    }
+  };
+
+  const searchInputChange = (value) => {
+    setInputSearchValue(value);
+  };
+
+  const searchTodoEnter = () => {
+    searchTodo();
+  };
+
+  const resetSearchInput = () => {
+    setInputSearchValue('');
+    refreshTodos();
+  }
+
   return (
     <div>
+      <button onClick={searchTodo}>🔍</button>
+      <input
+        value={inputSearchValue}
+        placeholder="Введите дело"
+        onChange={({ target }) => searchInputChange(target.value)}
+        onKeyDown={searchTodoEnter}
+      ></input>
+      <button className={styles.btn} onClick={resetSearchInput}>
+        ❌
+      </button>
+      <div>
+        <button className={styles.sortBtn} onClick={sortTodos}>
+          sort
+        </button>
+      </div>
+
       <ul className={styles.list}>
         {isLoading ? (
           <div className={styles.loader}></div>
@@ -42,7 +99,7 @@ export const TodoList = ({
                     onChange={({ target }) =>
                       handleInputChange(index, todo.id, todo.completed, target.value)
                     }
-                    onBlur={() => {handleUpdate(todo.id, todo.text); console.log('blur')}}
+                    onBlur={() => handleUpdateField(todo.id, todo.text)}
                   ></input>
                 </div>
               ) : (
@@ -57,8 +114,15 @@ export const TodoList = ({
               )}
 
               <div>
-                <button onClick={() => handleUpdate(todo.id, todo.text)}>📝</button>
-                <button onClick={() => handleDeleteTodo(todo.id)}>X</button>
+                <button
+                  className={styles.btn}
+                  onClick={() => handleUpdateField(todo.id, todo.text)}
+                >
+                  📝
+                </button>
+                <button className={styles.btn} onClick={() => handleDeleteTodo(todo.id)}>
+                  ❌
+                </button>
               </div>
             </li>
           ))

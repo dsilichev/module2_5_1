@@ -10,7 +10,7 @@ export const useRequestAdd = (refreshTodos) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({
-        text: text,
+        text: text[0].toUpperCase() + text.slice(1),
         completed: false,
       }),
     })

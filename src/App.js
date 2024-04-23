@@ -61,6 +61,7 @@ function App() {
           setTodos={setTodos}
           handleDeleteTodo={handleDeleteTodo}
           handleUpdateTodo={handleUpdateTodo}
+          refreshTodos={refreshTodos}
         />
       </div>
     </div>
