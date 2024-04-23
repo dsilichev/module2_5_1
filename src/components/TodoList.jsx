@@ -4,6 +4,8 @@ import _ from 'lodash';
 
 export const TodoList = ({
   isLoading,
+  isUpdating,
+  isDeleting,
   todos,
   setTodos,
   handleDeleteTodo,
@@ -11,9 +13,7 @@ export const TodoList = ({
   refreshTodos,
 }) => {
   const [updatingId, setUpdatingId] = useState('');
-  const [sortSign, setSortSign] = useState('asc');
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
-  const [isActiveSearchField, setIsActiveSearcField] = useState(false);
   const [inputSearchValue, setInputSearchValue] = useState('');
 
   const handleUpdateField = (id, text) => {
@@ -29,7 +29,6 @@ export const TodoList = ({
     const newTodos = [...todos];
     newTodos[index] = { id: id, text: text, completed: completed };
     setTodos([...newTodos]);
-    console.log(text);
   };
 
   const sortTodos = () => {
@@ -59,31 +58,35 @@ export const TodoList = ({
     setInputSearchValue(value);
   };
 
-  const searchTodoEnter = () => {
+  const searchTodoEnter = (e) => {
+    e.preventDefault();
     searchTodo();
   };
 
   const resetSearchInput = () => {
     setInputSearchValue('');
     refreshTodos();
-  }
+  };
 
   return (
-    <div>
-      <button onClick={searchTodo}>🔍</button>
-      <input
-        value={inputSearchValue}
-        placeholder="Введите дело"
-        onChange={({ target }) => searchInputChange(target.value)}
-        onKeyDown={searchTodoEnter}
-      ></input>
-      <button className={styles.btn} onClick={resetSearchInput}>
-        ❌
-      </button>
-      <div>
-        <button className={styles.sortBtn} onClick={sortTodos}>
-          sort
+    <div >
+      <form className={styles.formMargin} onSubmit={(e) => searchTodoEnter(e)}>
+        <button className={styles.btn} onClick={searchTodo}>
+          🔍
         </button>
+        <input
+          value={inputSearchValue}
+          placeholder="Введите дело"
+          onChange={({ target }) => searchInputChange(target.value)}
+          
+        ></input>
+        <button className={styles.btn} onClick={resetSearchInput}>
+          ❌
+        </button>
+      </form>
+
+      <div>
+        <button className={styles.sortBtn} onClick={sortTodos}></button>
       </div>
 
       <ul className={styles.list}>
@@ -117,10 +120,15 @@ export const TodoList = ({
                 <button
                   className={styles.btn}
                   onClick={() => handleUpdateField(todo.id, todo.text)}
+                  disabled={isUpdating}
                 >
                   📝
                 </button>
-                <button className={styles.btn} onClick={() => handleDeleteTodo(todo.id)}>
+                <button
+                  className={styles.btn}
+                  onClick={() => handleDeleteTodo(todo.id)}
+                  disabled={isDeleting}
+                >
                   ❌
                 </button>
               </div>

@@ -36,7 +36,6 @@ function App() {
 
   const handleAddTodo = (event) => {
     event.preventDefault();
-    console.log(event);
     requestAdd(event.target[1].value);
     event.target[1].value = '';
   };
@@ -52,11 +51,13 @@ function App() {
   return (
     <div className={styles.app}>
       <div>
-        <h1>Todo list {isLoading.toString()}</h1>
+        <h1>Todo list</h1>
         <TodoAdd handleAddTodo={handleAddTodo} isCreating={isCreating} />
 
         <TodoList
           isLoading={isLoading}
+          isUpdating={isUpdating}
+          isDeleting={isDeleting}
           todos={todos}
           setTodos={setTodos}
           handleDeleteTodo={handleDeleteTodo}

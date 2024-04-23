@@ -3,6 +3,10 @@
   justify-content: center;
 }
 
+.formMargin {
+  margin-bottom: 5px;
+}
+
 .list {
   margin: 0;
   padding: 0;
@@ -52,5 +56,11 @@
 }
 
 .sortBtn {
-  
+  width: 30px;
+  height: 30px;
+  background-image: url('./img/icon-sort.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
+
