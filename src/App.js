@@ -14,7 +14,7 @@ function App() {
 
   const refreshTodos = () => setRefreshTodosFlag(!refreshTodosFlag);
 
-  const { isLoading, todos, setTodos } = useRequestGet(refreshTodosFlag);
+  const { isLoading, todos, setTodos, storedTodos } = useRequestGet(refreshTodosFlag);
   const { isCreating, requestAdd } = useRequestAdd(refreshTodos);
   const { isUpdating, requestUpdate } = useRequestUpdate(refreshTodos);
   const { isDeleting, requestDelete } = useRequestDelete(refreshTodos);
@@ -59,6 +59,7 @@ function App() {
           isUpdating={isUpdating}
           isDeleting={isDeleting}
           todos={todos}
+          storedTodos={storedTodos}
           setTodos={setTodos}
           handleDeleteTodo={handleDeleteTodo}
           handleUpdateTodo={handleUpdateTodo}

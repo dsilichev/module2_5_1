@@ -1,11 +1,6 @@
 {
   "todos": [
     {
-      "id": "3",
-      "text": "Sleeplghdj",
-      "completed": true
-    },
-    {
       "id": "4",
       "text": "Repeat",
       "completed": false
@@ -19,6 +14,11 @@
       "text": "Ерпро",
       "completed": false,
       "id": "Z70S3Xu"
+    },
+    {
+      "text": "Serty",
+      "completed": false,
+      "id": "Ko7-_oD"
     }
   ]
 }

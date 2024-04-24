@@ -7,6 +7,7 @@ export const TodoList = ({
   isUpdating,
   isDeleting,
   todos,
+  storedTodos,
   setTodos,
   handleDeleteTodo,
   handleUpdateTodo,
@@ -15,10 +16,21 @@ export const TodoList = ({
   const [updatingId, setUpdatingId] = useState('');
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
   const [inputSearchValue, setInputSearchValue] = useState('');
+  // const [storedTodos, setStoredTodos] = useState([...todos]);
+
+  function debounce(func, delay) {
+    let timeoutId;
+
+    return function execFunc(...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(this, args), delay);
+      
+    };
+  }
 
   const handleUpdateField = (id, text, completed) => {
     if (id === updatingId) {
-      handleUpdateTodo(id, {text: text, completed: completed});
+      handleUpdateTodo(id, { text: text, completed: completed });
       setUpdatingId('');
     } else {
       setUpdatingId(id);
@@ -31,11 +43,13 @@ export const TodoList = ({
     setTodos([...newTodos]);
   };
 
+  
+
   const handleCheckboxChange = (index, id, checked, text) => {
     const newTodos = [...todos];
     newTodos[index] = { id: id, text: text, completed: checked };
     setTodos([...newTodos]);
-    handleUpdateTodo(id, {text: text, completed: checked});
+    handleUpdateTodo(id, { text: text, completed: checked });
   };
 
   const sortTodos = () => {
@@ -50,19 +64,31 @@ export const TodoList = ({
     setTodos([...sortedTodos]);
   };
 
-  const searchTodo = () => {
-    if (inputSearchValue) {
-      setTimeout(() => {
-        const newTodos = _.filter(todos, (todo) =>
-          todo.text.toLowerCase().includes(inputSearchValue.toLowerCase()),
-        );
-        setTodos([...newTodos]);
-      }, 300);
+  const searchTodo = (value, storedTodos) => {
+    //setStoredTodos([...todos]);
+    console.log('storedTodos', storedTodos);
+    console.log('Value', value);
+    if (value) {
+      
+      const newTodos = _.filter(storedTodos, (todo) =>
+        todo.text.toLowerCase().includes(value.toLowerCase()),
+      );
+      setTodos([...newTodos]);
+      // setTimeout(() => {
+      //   const newTodos = _.filter(todos, (todo) =>
+      //     todo.text.toLowerCase().includes(inputSearchValue.toLowerCase()),
+      //   );
+      //   setTodos([...newTodos]);
+      // }, 300);
+    } else {
+      setTodos([...storedTodos]);
     }
   };
+  const debouncedSearchTodo = debounce(searchTodo, 300);
 
   const searchInputChange = (value) => {
     setInputSearchValue(value);
+    debouncedSearchTodo(value, storedTodos);
   };
 
   const searchTodoEnter = (e) => {
@@ -75,8 +101,10 @@ export const TodoList = ({
     refreshTodos();
   };
 
+  
+
   return (
-    <div >
+    <div>
       <form className={styles.formMargin} onSubmit={(e) => searchTodoEnter(e)}>
         <button className={styles.btn} onClick={searchTodo}>
           🔍
@@ -85,7 +113,6 @@ export const TodoList = ({
           value={inputSearchValue}
           placeholder="Введите дело"
           onChange={({ target }) => searchInputChange(target.value)}
-          
         ></input>
         <button className={styles.btn} onClick={resetSearchInput}>
           ❌
@@ -118,7 +145,9 @@ export const TodoList = ({
                     type="checkbox"
                     id={todo.id}
                     defaultChecked={todo.completed}
-                    onChange={({target}) => handleCheckboxChange(index, todo.id, target.checked, todo.text )}
+                    onChange={({ target }) =>
+                      handleCheckboxChange(index, todo.id, target.checked, todo.text)
+                    }
                   ></input>
                   <label htmlFor={todo.id}>{todo.text}</label>
                 </div>
