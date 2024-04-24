@@ -16,9 +16,9 @@ export const TodoList = ({
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
   const [inputSearchValue, setInputSearchValue] = useState('');
 
-  const handleUpdateField = (id, text) => {
+  const handleUpdateField = (id, text, completed) => {
     if (id === updatingId) {
-      handleUpdateTodo(id, text);
+      handleUpdateTodo(id, {text: text, completed: completed});
       setUpdatingId('');
     } else {
       setUpdatingId(id);
@@ -29,6 +29,13 @@ export const TodoList = ({
     const newTodos = [...todos];
     newTodos[index] = { id: id, text: text, completed: completed };
     setTodos([...newTodos]);
+  };
+
+  const handleCheckboxChange = (index, id, checked, text) => {
+    const newTodos = [...todos];
+    newTodos[index] = { id: id, text: text, completed: checked };
+    setTodos([...newTodos]);
+    handleUpdateTodo(id, {text: text, completed: checked});
   };
 
   const sortTodos = () => {
@@ -102,7 +109,7 @@ export const TodoList = ({
                     onChange={({ target }) =>
                       handleInputChange(index, todo.id, todo.completed, target.value)
                     }
-                    onBlur={() => handleUpdateField(todo.id, todo.text)}
+                    onBlur={() => handleUpdateField(todo.id, todo.text, todo.completed)}
                   ></input>
                 </div>
               ) : (
@@ -111,6 +118,7 @@ export const TodoList = ({
                     type="checkbox"
                     id={todo.id}
                     defaultChecked={todo.completed}
+                    onChange={({target}) => handleCheckboxChange(index, todo.id, target.checked, todo.text )}
                   ></input>
                   <label htmlFor={todo.id}>{todo.text}</label>
                 </div>

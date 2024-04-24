@@ -40,8 +40,8 @@ function App() {
     event.target[1].value = '';
   };
 
-  const handleUpdateTodo = (id, text) => {
-    requestUpdate(id, text);
+  const handleUpdateTodo = (id, data) => {
+    requestUpdate(id, data);
   };
 
   const handleDeleteTodo = (id) => {

@@ -1,14 +1,9 @@
 {
   "todos": [
     {
-      "id": "2",
-      "text": "Codef",
-      "completed": true
-    },
-    {
       "id": "3",
-      "text": "Sleep",
-      "completed": false
+      "text": "Sleeplghdj",
+      "completed": true
     },
     {
       "id": "4",
