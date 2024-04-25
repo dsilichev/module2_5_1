@@ -7,7 +7,6 @@ export const TodoList = ({
   isUpdating,
   isDeleting,
   todos,
-  storedTodos,
   setTodos,
   handleDeleteTodo,
   handleUpdateTodo,
@@ -16,7 +15,6 @@ export const TodoList = ({
   const [updatingId, setUpdatingId] = useState('');
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
   const [inputSearchValue, setInputSearchValue] = useState('');
-  // const [storedTodos, setStoredTodos] = useState([...todos]);
 
   function debounce(func, delay) {
     let timeoutId;
@@ -64,36 +62,29 @@ export const TodoList = ({
     setTodos([...sortedTodos]);
   };
 
-  const searchTodo = (value, storedTodos) => {
-    //setStoredTodos([...todos]);
-    console.log('storedTodos', storedTodos);
+  const searchTodo = (value) => {
+
     console.log('Value', value);
     if (value) {
       
-      const newTodos = _.filter(storedTodos, (todo) =>
+      const newTodos = _.filter(todos, (todo) =>
         todo.text.toLowerCase().includes(value.toLowerCase()),
       );
       setTodos([...newTodos]);
-      // setTimeout(() => {
-      //   const newTodos = _.filter(todos, (todo) =>
-      //     todo.text.toLowerCase().includes(inputSearchValue.toLowerCase()),
-      //   );
-      //   setTodos([...newTodos]);
-      // }, 300);
     } else {
-      setTodos([...storedTodos]);
+      refreshTodos();
     }
   };
   const debouncedSearchTodo = debounce(searchTodo, 300);
 
   const searchInputChange = (value) => {
     setInputSearchValue(value);
-    debouncedSearchTodo(value, storedTodos);
+    debouncedSearchTodo(value);
   };
 
   const searchTodoEnter = (e) => {
     e.preventDefault();
-    searchTodo();
+    searchTodo(inputSearchValue);
   };
 
   const resetSearchInput = () => {

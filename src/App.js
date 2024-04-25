@@ -59,7 +59,6 @@ function App() {
           isUpdating={isUpdating}
           isDeleting={isDeleting}
           todos={todos}
-          storedTodos={storedTodos}
           setTodos={setTodos}
           handleDeleteTodo={handleDeleteTodo}
           handleUpdateTodo={handleUpdateTodo}

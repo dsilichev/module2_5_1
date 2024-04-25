@@ -2,12 +2,12 @@
   "todos": [
     {
       "id": "4",
-      "text": "Repeat",
-      "completed": false
+      "text": "Repeathhn",
+      "completed": true
     },
     {
       "text": "Live",
-      "completed": false,
+      "completed": true,
       "id": "JdSBQ9C"
     },
     {
@@ -19,6 +19,11 @@
       "text": "Serty",
       "completed": false,
       "id": "Ko7-_oD"
+    },
+    {
+      "text": "Dfbgs",
+      "completed": false,
+      "id": "6yD0x-S"
     }
   ]
 }

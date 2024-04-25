@@ -13,11 +13,10 @@ export const useRequestGet = (refreshTodosFlag) => {
       .finally(() => setIsLoading(false));
   }, [refreshTodosFlag]);
 
-  const storedTodos = todos.slice();
+  
   return {
     isLoading,
     todos,
     setTodos,
-    storedTodos,
   }
 }
