@@ -1,23 +1,22 @@
 import { useState } from 'react';
+import { ref, push } from 'firebase/database';
+import { db } from '../firebase';
 
-export const useRequestAdd = (refreshTodos) => {
+export const useRequestAdd = () => {
   const [isCreating, setIsCreating] = useState(false);
 
   const requestAdd = (text) => {
     setIsCreating(true);
 
-    fetch('http://localhost:3005/todos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({
-        text: text[0].toUpperCase() + text.slice(1),
-        completed: false,
-      }),
+    const todosDbRef = ref(db, 'todos');
+
+    push(todosDbRef, {
+      text: text,
+      completed: false,
     })
-      .then((rawResponse) => rawResponse.json())
       .then((response) => {
-        refreshTodos();
-        console.log(response);
+        
+        console.log('Добавлено:', response);
       })
       .finally(() => setIsCreating(false));
   };

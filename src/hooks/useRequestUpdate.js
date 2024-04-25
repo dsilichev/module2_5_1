@@ -1,19 +1,18 @@
 import { useState } from 'react';
+import { ref, set } from 'firebase/database';
+import { db } from '../firebase';
 
-export const useRequestUpdate = (refreshTodos) => {
+export const useRequestUpdate = () => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const requestUpdate = (id, data) => {
     setIsUpdating(true);
 
-    fetch(`http://localhost:3005/todos/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify(data),
-    })
-      .then((rawResponse) => rawResponse.json())
+    const todosItemDbRef = ref(db, `todos/${id}`);
+
+    set(todosItemDbRef, data)
       .then((response) => {
-        refreshTodos();
+        
         console.log(response);
       })
       .finally(() => setIsUpdating(false));

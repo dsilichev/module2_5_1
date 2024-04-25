@@ -36,7 +36,7 @@ export const TodoList = ({
   };
 
   const handleInputChange = (index, id, completed, text) => {
-    const newTodos = [...todos];
+    const newTodos = {...todos};
     newTodos[index] = { id: id, text: text, completed: completed };
     setTodos([...newTodos]);
   };
@@ -118,43 +118,43 @@ export const TodoList = ({
         {isLoading ? (
           <div className={styles.loader}></div>
         ) : (
-          todos.map((todo, index) => (
-            <li key={todo.id}>
-              {todo.id === updatingId ? (
+          Object.entries(todos).map(([id, {completed, text}], index) => (
+            <li key={id}>
+              {id === updatingId ? (
                 <div>
                   <input
-                    value={todo.text}
+                    value={text}
                     onChange={({ target }) =>
-                      handleInputChange(index, todo.id, todo.completed, target.value)
+                      handleInputChange(index, id, completed, target.value)
                     }
-                    onBlur={() => handleUpdateField(todo.id, todo.text, todo.completed)}
+                    onBlur={() => handleUpdateField(id, text, completed)}
                   ></input>
                 </div>
               ) : (
                 <div>
                   <input
                     type="checkbox"
-                    id={todo.id}
-                    defaultChecked={todo.completed}
+                    id={id}
+                    defaultChecked={completed}
                     onChange={({ target }) =>
-                      handleCheckboxChange(index, todo.id, target.checked, todo.text)
+                      handleCheckboxChange(index, id, target.checked, text)
                     }
                   ></input>
-                  <label htmlFor={todo.id}>{todo.text}</label>
+                  <label htmlFor={id}>{text}</label>
                 </div>
               )}
 
               <div>
                 <button
                   className={styles.btn}
-                  onClick={() => handleUpdateField(todo.id, todo.text)}
+                  onClick={() => handleUpdateField(id, text)}
                   disabled={isUpdating}
                 >
                   📝
                 </button>
                 <button
                   className={styles.btn}
-                  onClick={() => handleDeleteTodo(todo.id)}
+                  onClick={() => handleDeleteTodo(id)}
                   disabled={isDeleting}
                 >
                   ❌

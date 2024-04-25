@@ -14,9 +14,9 @@ function App() {
 
   const refreshTodos = () => setRefreshTodosFlag(!refreshTodosFlag);
 
-  const { isLoading, todos, setTodos, storedTodos } = useRequestGet(refreshTodosFlag);
-  const { isCreating, requestAdd } = useRequestAdd(refreshTodos);
-  const { isUpdating, requestUpdate } = useRequestUpdate(refreshTodos);
+  const { isLoading, todos, setTodos } = useRequestGet();
+  const { isCreating, requestAdd } = useRequestAdd();
+  const { isUpdating, requestUpdate } = useRequestUpdate();
   const { isDeleting, requestDelete } = useRequestDelete(refreshTodos);
 
   // JSON Placeholder
