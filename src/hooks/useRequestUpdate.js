@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ref, set } from 'firebase/database';
+import { ref, update } from 'firebase/database';
 import { db } from '../firebase';
 
 export const useRequestUpdate = () => {
@@ -10,7 +10,7 @@ export const useRequestUpdate = () => {
 
     const todosItemDbRef = ref(db, `todos/${id}`);
 
-    set(todosItemDbRef, data)
+    update(todosItemDbRef, data)
       .then((response) => {
         
         console.log(response);

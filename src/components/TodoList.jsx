@@ -37,8 +37,9 @@ export const TodoList = ({
 
   const handleInputChange = (index, id, completed, text) => {
     const newTodos = {...todos};
-    newTodos[index] = { id: id, text: text, completed: completed };
-    setTodos([...newTodos]);
+    console.log(newTodos);
+    newTodos[id] = { text: text, completed: completed };
+    setTodos({...newTodos});
   };
 
   
