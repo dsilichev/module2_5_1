@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { ref, remove } from 'firebase/database';
+import { db } from '../firebase';
 
 export const useRequestDelete = (refreshTodos) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -6,12 +8,10 @@ export const useRequestDelete = (refreshTodos) => {
   const requestDelete = (id) => {
     setIsDeleting(true);
 
-    fetch(`http://localhost:3005/todos/${id}`, {
-      method: 'DELETE',
-    })
-      .then((rawResponse) => rawResponse.json())
+    const todosItemDbRef = ref(db, `todos/${id}`);
+
+    remove(todosItemDbRef)
       .then((response) => {
-        refreshTodos();
         console.log(response);
       })
       .finally(() => setIsDeleting(false));
