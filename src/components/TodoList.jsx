@@ -15,6 +15,8 @@ export const TodoList = ({
   const [updatingId, setUpdatingId] = useState('');
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
   const [inputSearchValue, setInputSearchValue] = useState('');
+  const [todosTemp, setTodosTemp] = useState({...todos});
+ 
 
   function debounce(func, delay) {
     let timeoutId;
@@ -45,9 +47,9 @@ export const TodoList = ({
   
 
   const handleCheckboxChange = (index, id, checked, text) => {
-    const newTodos = [...todos];
-    newTodos[index] = { id: id, text: text, completed: checked };
-    setTodos([...newTodos]);
+    const newTodos = {...todos};
+    newTodos[id] = { text: text, completed: checked };
+    setTodos({...newTodos});
     handleUpdateTodo(id, { text: text, completed: checked });
   };
 
@@ -128,7 +130,8 @@ export const TodoList = ({
                     onChange={({ target }) =>
                       handleInputChange(index, id, completed, target.value)
                     }
-                    onBlur={() => handleUpdateField(id, text, completed)}
+                    
+                    onKeyDown={(e) => e.key === 'Enter' ? handleUpdateField(id, text, completed) : {}}
                   ></input>
                 </div>
               ) : (
@@ -148,7 +151,7 @@ export const TodoList = ({
               <div>
                 <button
                   className={styles.btn}
-                  onClick={() => handleUpdateField(id, text)}
+                  onClick={() => handleUpdateField(id, text, completed)}
                   disabled={isUpdating}
                 >
                   📝

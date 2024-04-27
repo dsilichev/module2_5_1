@@ -14,10 +14,10 @@ function App() {
 
   const refreshTodos = () => setRefreshTodosFlag(!refreshTodosFlag);
 
-  const { isLoading, todos, setTodos } = useRequestGet();
+  const { isLoading, todos, setTodos } = useRequestGet(refreshTodosFlag);
   const { isCreating, requestAdd } = useRequestAdd();
   const { isUpdating, requestUpdate } = useRequestUpdate();
-  const { isDeleting, requestDelete } = useRequestDelete(refreshTodos);
+  const { isDeleting, requestDelete } = useRequestDelete();
 
   // JSON Placeholder
   // useEffect(() => {
