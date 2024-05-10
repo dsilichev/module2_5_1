@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../app.module.css';
 import _ from 'lodash';
 
@@ -140,7 +141,8 @@ export const TodoList = ({
                       handleCheckboxChange(index, todo.id, target.checked, todo.text)
                     }
                   ></input>
-                  <label htmlFor={todo.id}>{todo.text}</label>
+                  <Link to={`task/${todo.id}`}><label htmlFor={todo.id}>{todo.text}</label></Link>
+                  
                 </div>
               )}
 
