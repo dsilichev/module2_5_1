@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import styles from '../app.module.css';
 import _ from 'lodash';
 
+const MAXLENGTH = 20;
+
 export const TodoList = ({
   isLoading,
   isUpdating,
@@ -17,13 +19,21 @@ export const TodoList = ({
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
   const [inputSearchValue, setInputSearchValue] = useState('');
 
+  const getShortTaskName = (taskName) => {
+    if (taskName.length > MAXLENGTH) {
+      return taskName.slice(0, MAXLENGTH) + '...';
+    } else {
+      return taskName;
+    }
+  }
+
   function debounce(func, delay) {
     let timeoutId;
 
     return function execFunc(...args) {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => func.apply(this, args), delay);
-      
+
     };
   }
 
@@ -42,7 +52,7 @@ export const TodoList = ({
     setTodos([...newTodos]);
   };
 
-  
+
 
   const handleCheckboxChange = (index, id, checked, text) => {
     const newTodos = [...todos];
@@ -67,7 +77,7 @@ export const TodoList = ({
 
     console.log('Value', value);
     if (value) {
-      
+
       const newTodos = _.filter(todos, (todo) =>
         todo.text.toLowerCase().includes(value.toLowerCase()),
       );
@@ -93,7 +103,7 @@ export const TodoList = ({
     refreshTodos();
   };
 
-  
+
 
   return (
     <div>
@@ -141,13 +151,14 @@ export const TodoList = ({
                       handleCheckboxChange(index, todo.id, target.checked, todo.text)
                     }
                   ></input>
-                  <Link to={`task/${todo.id}`}><label htmlFor={todo.id}>{todo.text}</label></Link>
-                  
+                  <Link to={`task/${todo.id}`}><label htmlFor={todo.id}>{getShortTaskName(todo.text)}</label></Link>
+
                 </div>
               )}
 
               <div>
                 <button
+                  style={{ display: 'none' }}
                   className={styles.btn}
                   onClick={() => handleUpdateField(todo.id, todo.text)}
                   disabled={isUpdating}
@@ -155,6 +166,7 @@ export const TodoList = ({
                   📝
                 </button>
                 <button
+                  style={{ display: 'none' }}
                   className={styles.btn}
                   onClick={() => handleDeleteTodo(todo.id)}
                   disabled={isDeleting}

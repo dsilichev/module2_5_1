@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, NavLink, Outlet, useParams, useMatch, useNavigate } from 'react-router-dom';
+import { Routes, Route, useParams, useNavigate, Navigate } from 'react-router-dom';
 import styles from './app.module.css';
 import { TodoList } from './components/TodoList';
 import { TodoAdd } from './components/TodoAddItem';
+import { TaskPage } from './components/TaskPage';
 import {
   useRequestAdd,
   useRequestUpdate,
@@ -55,23 +56,6 @@ function App() {
     )
   }
 
-  const TaskPage = () => {
-    const params = useParams();
-    return (
-      <div>
-        {params.id}
-      </div>
-    )
-  }
-
-  const NotFound = () => {
-    const navigate = useNavigate();
-    useEffect(() => {
-      navigate('/404', { replace: true });
-    }, [navigate])
-
-  }
-
   const Page404 = () => <div>
     <h1>404</h1>
     <div>Такая страница не сущетсвует</div>
@@ -82,8 +66,10 @@ function App() {
 
       <Routes>
         <Route path='/' element={<MainPage />} />
-        <Route path='/task/:id' element={<TaskPage />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path='/task/:id' element={<TaskPage
+          handleDeleteTodo={handleDeleteTodo}
+          handleUpdateTodo={handleUpdateTodo} />} />
+        <Route path='*' element={<Navigate to='/404' />} />
         <Route path='/404' element={<Page404 />} />
       </Routes>
     </div>
