@@ -1,6 +1,9 @@
+import { useContext } from 'react';
 import styles from '../app.module.css';
+import { AppContext } from '../context';
 
-export const TodoAdd = ({ handleAddTodo, isCreating }) => {
+export const TodoAdd = () => {
+  const { handleAddTodo, isCreating } = useContext(AppContext);
   return (
     <div className={styles.formMargin}>
       <form onSubmit={handleAddTodo}>

@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from '../app.module.css';
 import _ from 'lodash';
+import { AppContext } from '../context';
 
-export const TodoList = ({
-  isLoading,
-  isUpdating,
-  isDeleting,
-  todos,
-  setTodos,
-  handleDeleteTodo,
-  handleUpdateTodo,
-  refreshTodos,
-}) => {
+export const TodoList = () => {
+  const {
+    isLoading,
+    isUpdating,
+    isDeleting,
+    todos,
+    setTodos,
+    handleDeleteTodo,
+    handleUpdateTodo,
+    refreshTodos,
+  } = useContext(AppContext);
+  
   const [updatingId, setUpdatingId] = useState('');
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
   const [inputSearchValue, setInputSearchValue] = useState('');
@@ -22,7 +25,7 @@ export const TodoList = ({
     return function execFunc(...args) {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => func.apply(this, args), delay);
-      
+
     };
   }
 
@@ -41,7 +44,7 @@ export const TodoList = ({
     setTodos([...newTodos]);
   };
 
-  
+
 
   const handleCheckboxChange = (index, id, checked, text) => {
     const newTodos = [...todos];
@@ -66,7 +69,7 @@ export const TodoList = ({
 
     console.log('Value', value);
     if (value) {
-      
+
       const newTodos = _.filter(todos, (todo) =>
         todo.text.toLowerCase().includes(value.toLowerCase()),
       );
@@ -92,7 +95,7 @@ export const TodoList = ({
     refreshTodos();
   };
 
-  
+
 
   return (
     <div>
