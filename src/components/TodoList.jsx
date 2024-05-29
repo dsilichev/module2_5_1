@@ -2,19 +2,26 @@ import { useContext, useState } from 'react';
 import styles from '../app.module.css';
 import _ from 'lodash';
 import { AppContext } from '../context';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectTodos } from '../selectors';
+import { getTodos } from '../actions';
 
 export const TodoList = () => {
   const {
     isLoading,
     isUpdating,
     isDeleting,
-    todos,
+    
     setTodos,
     handleDeleteTodo,
     handleUpdateTodo,
     refreshTodos,
   } = useContext(AppContext);
-  
+  const dispatch = useDispatch();
+
+  //dispatch(getTodos);
+  const todos = useSelector(selectTodos);
+
   const [updatingId, setUpdatingId] = useState('');
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
   const [inputSearchValue, setInputSearchValue] = useState('');
