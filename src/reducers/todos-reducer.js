@@ -1,0 +1,32 @@
+export const initialTodoState = [];
+
+export const todosReducer = (state = initialTodoState, action) => {
+  switch (action.type) {
+    case 'GET_TODOS': {
+      return {
+        ...state,
+        todos: action.payload,
+      };
+    }
+    case 'ADD_TODOS': {
+      return {
+        ...state,
+        todos: action.payload,
+      };
+    }
+    case 'UPDATE_TODOS': {
+      return {
+        ...state,
+        todos: action.payload,
+      };
+    }
+    case 'DELETE_TODOS': {
+      return {
+        ...state,
+        todos: action.payload,
+      };
+    }
+    default:
+      return state;
+  }
+};
