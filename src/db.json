@@ -3,7 +3,7 @@
     {
       "id": "4",
       "text": "Repeathhn111",
-      "completed": false
+      "completed": true
     },
     {
       "text": "Live",
@@ -19,11 +19,6 @@
       "text": "Serty",
       "completed": false,
       "id": "Ko7-_oD"
-    },
-    {
-      "text": "Dfbgs",
-      "completed": false,
-      "id": "6yD0x-S"
     }
   ]
 }

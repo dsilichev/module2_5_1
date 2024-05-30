@@ -1,4 +1,4 @@
-export const initialTodoState = [];
+export const initialTodoState = {todos:[]};
 
 export const todosReducer = (state = initialTodoState, action) => {
   switch (action.type) {
@@ -11,19 +11,21 @@ export const todosReducer = (state = initialTodoState, action) => {
     case 'ADD_TODOS': {
       return {
         ...state,
-        todos: action.payload,
+        todos: [...state.todos, action.payload],
       };
     }
     case 'UPDATE_TODOS': {
       return {
         ...state,
-        todos: action.payload,
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload.id ? { ...todo, ...action.payload } : todo,
+        ),
       };
     }
     case 'DELETE_TODOS': {
       return {
         ...state,
-        todos: action.payload,
+        todos: state.todos.filter(({ id }) => id !== action.payload),
       };
     }
     default:

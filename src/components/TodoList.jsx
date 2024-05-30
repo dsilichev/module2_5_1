@@ -4,7 +4,8 @@ import _ from 'lodash';
 import { AppContext } from '../context';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTodos } from '../selectors';
-import { getTodos } from '../actions';
+import { getTodos, updateLocalTodo, updateTodo } from '../actions';
+import { useEffect } from 'react';
 
 export const TodoList = () => {
   const {
@@ -12,14 +13,13 @@ export const TodoList = () => {
     isUpdating,
     isDeleting,
     
-    setTodos,
+    
     handleDeleteTodo,
     handleUpdateTodo,
-    refreshTodos,
+    
   } = useContext(AppContext);
   const dispatch = useDispatch();
 
-  //dispatch(getTodos);
   const todos = useSelector(selectTodos);
 
   const [updatingId, setUpdatingId] = useState('');
@@ -48,7 +48,9 @@ export const TodoList = () => {
   const handleInputChange = (index, id, completed, text) => {
     const newTodos = [...todos];
     newTodos[index] = { id: id, text: text, completed: completed };
-    setTodos([...newTodos]);
+    //setTodos([...newTodos]);
+    console.log(newTodos[index]);
+    dispatch(updateTodo(id, { text: text, completed: completed }));
   };
 
 
@@ -56,7 +58,7 @@ export const TodoList = () => {
   const handleCheckboxChange = (index, id, checked, text) => {
     const newTodos = [...todos];
     newTodos[index] = { id: id, text: text, completed: checked };
-    setTodos([...newTodos]);
+    //setTodos([...newTodos]);
     handleUpdateTodo(id, { text: text, completed: checked });
   };
 
@@ -69,7 +71,7 @@ export const TodoList = () => {
       }
     });
     const sortedTodos = _.orderBy(todos, [sortBy.path], [sortBy.order]);
-    setTodos([...sortedTodos]);
+    //setTodos([...sortedTodos]);
   };
 
   const searchTodo = (value) => {
@@ -80,9 +82,9 @@ export const TodoList = () => {
       const newTodos = _.filter(todos, (todo) =>
         todo.text.toLowerCase().includes(value.toLowerCase()),
       );
-      setTodos([...newTodos]);
+      //setTodos([...newTodos]);
     } else {
-      refreshTodos();
+      //refreshTodos();
     }
   };
   const debouncedSearchTodo = debounce(searchTodo, 300);
@@ -99,7 +101,7 @@ export const TodoList = () => {
 
   const resetSearchInput = () => {
     setInputSearchValue('');
-    refreshTodos();
+    //refreshTodos();
   };
 
 

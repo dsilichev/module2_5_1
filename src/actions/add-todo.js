@@ -10,8 +10,8 @@ export const addTodo = (text) => (dispatch) =>
     .then((rawResponse) => rawResponse.json())
     .then((response) => {
       dispatch({
-        type: 'ADD_TODO',
+        type: 'ADD_TODOS',
         payload: response,
       })
     })
-    .finally(() => setIsCreating(false));
+    .finally(() => {});
