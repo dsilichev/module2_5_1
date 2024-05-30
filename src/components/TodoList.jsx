@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { AppContext } from '../context';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTodos } from '../selectors';
-import { getTodos, updateLocalTodo, updateTodo } from '../actions';
+import { getTodos, updateLocalTodo, updateTodo, setTodos } from '../actions';
 import { useEffect } from 'react';
 
 export const TodoList = () => {
@@ -46,11 +46,11 @@ export const TodoList = () => {
   };
 
   const handleInputChange = (index, id, completed, text) => {
-    const newTodos = [...todos];
-    newTodos[index] = { id: id, text: text, completed: completed };
+    //const newTodos = [...todos];
+    //newTodos[index] = { id: id, text: text, completed: completed };
     //setTodos([...newTodos]);
-    console.log(newTodos[index]);
-    dispatch(updateTodo(id, { text: text, completed: completed }));
+    //console.log(newTodos[index]);
+    dispatch(updateLocalTodo(id, { text: text, completed: completed }));
   };
 
 
@@ -72,6 +72,7 @@ export const TodoList = () => {
     });
     const sortedTodos = _.orderBy(todos, [sortBy.path], [sortBy.order]);
     //setTodos([...sortedTodos]);
+    dispatch(setTodos(sortedTodos));
   };
 
   const searchTodo = (value) => {

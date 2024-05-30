@@ -28,6 +28,12 @@ export const todosReducer = (state = initialTodoState, action) => {
         todos: state.todos.filter(({ id }) => id !== action.payload),
       };
     }
+    case 'SET_TODOS': {
+      return {
+        ...state,
+        todos: action.payload,
+      }
+    }
     default:
       return state;
   }

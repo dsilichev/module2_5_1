@@ -5,3 +5,4 @@ export * from './update-todo';
 export * from './set-isdeleting';
 export * from './set-isloading';
 export * from './set-isupdating';
+export * from './set-todos';
