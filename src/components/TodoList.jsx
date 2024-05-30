@@ -12,11 +12,9 @@ export const TodoList = () => {
     isLoading,
     isUpdating,
     isDeleting,
-    
-    
+
     handleDeleteTodo,
     handleUpdateTodo,
-    
   } = useContext(AppContext);
   const dispatch = useDispatch();
 
@@ -32,7 +30,6 @@ export const TodoList = () => {
     return function execFunc(...args) {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => func.apply(this, args), delay);
-
     };
   }
 
@@ -52,8 +49,6 @@ export const TodoList = () => {
     //console.log(newTodos[index]);
     dispatch(updateLocalTodo(id, { text: text, completed: completed }));
   };
-
-
 
   const handleCheckboxChange = (index, id, checked, text) => {
     const newTodos = [...todos];
@@ -76,10 +71,8 @@ export const TodoList = () => {
   };
 
   const searchTodo = (value) => {
-
     console.log('Value', value);
     if (value) {
-
       const newTodos = _.filter(todos, (todo) =>
         todo.text.toLowerCase().includes(value.toLowerCase()),
       );
@@ -108,8 +101,6 @@ export const TodoList = () => {
     dispatch(getTodos);
   };
 
-
-
   return (
     <div>
       <form className={styles.formMargin} onSubmit={(e) => searchTodoEnter(e)}>
@@ -137,45 +128,64 @@ export const TodoList = () => {
           todos.map((todo, index) => (
             <li key={todo.id}>
               {todo.id === updatingId ? (
-                <div>
-                  <input
-                    value={todo.text}
-                    onChange={({ target }) =>
-                      handleInputChange(index, todo.id, todo.completed, target.value)
-                    }
-                    onBlur={() => handleUpdateField(todo.id, todo.text, todo.completed)}
-                  ></input>
-                </div>
+                <>
+                  <div>
+                    <input
+                      value={todo.text}
+                      onChange={({ target }) =>
+                        handleInputChange(index, todo.id, todo.completed, target.value)
+                      }
+                      onKeyDown={(e) => {if (e.code === 'Enter') {handleUpdateField(todo.id, todo.text, todo.completed)}}}
+                    ></input>
+                  </div>
+                  <div>
+                    <button
+                      className={styles.btn}
+                      onClick={() => handleUpdateField(todo.id, todo.text, todo.completed)}
+                      disabled={isUpdating}
+                    >
+                      ✔️
+                    </button>
+                    <button
+                      className={styles.btn}
+                      onClick={() => {setUpdatingId('')}}
+                      disabled={isDeleting}
+                    >
+                      🔙
+                    </button>
+                  </div>
+                </>
               ) : (
-                <div>
-                  <input
-                    type="checkbox"
-                    id={todo.id}
-                    defaultChecked={todo.completed}
-                    onChange={({ target }) =>
-                      handleCheckboxChange(index, todo.id, target.checked, todo.text)
-                    }
-                  ></input>
-                  <label htmlFor={todo.id}>{todo.text}</label>
-                </div>
+                <>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id={todo.id}
+                      defaultChecked={todo.completed}
+                      onChange={({ target }) =>
+                        handleCheckboxChange(index, todo.id, target.checked, todo.text)
+                      }
+                    ></input>
+                    <label htmlFor={todo.id}>{todo.text}</label>
+                  </div>
+                  <div>
+                    <button
+                      className={styles.btn}
+                      onClick={() => handleUpdateField(todo.id, todo.text)}
+                      disabled={isUpdating}
+                    >
+                      📝
+                    </button>
+                    <button
+                      className={styles.btn}
+                      onClick={() => handleDeleteTodo(todo.id)}
+                      disabled={isDeleting}
+                    >
+                      ❌
+                    </button>
+                  </div>
+                </>
               )}
-
-              <div>
-                <button
-                  className={styles.btn}
-                  onClick={() => handleUpdateField(todo.id, todo.text)}
-                  disabled={isUpdating}
-                >
-                  📝
-                </button>
-                <button
-                  className={styles.btn}
-                  onClick={() => handleDeleteTodo(todo.id)}
-                  disabled={isDeleting}
-                >
-                  ❌
-                </button>
-              </div>
             </li>
           ))
         )}
