@@ -1,15 +1,16 @@
+import { setIsDeleting } from "./set-isdeleting";
+
 export const deleteTodo = (id) => (dispatch) => {
+  dispatch(setIsDeleting(true));
   fetch(`http://localhost:3005/todos/${id}`, {
-      method: 'DELETE',
-    })
-      .then((rawResponse) => rawResponse.json())
-      .then((response) => {
-        //refreshTodos();
-        dispatch({
-          type: 'DELETE_TODOS',
-          payload: id,
-        })
-        console.log(response);
+    method: 'DELETE',
+  })
+    .then((rawResponse) => rawResponse.json())
+    .then((response) => {
+      dispatch({
+        type: 'DELETE_TODOS',
+        payload: id,
       })
-      .finally(() => {});
+    })
+    .finally(() => { dispatch(setIsDeleting(false)); });
 }

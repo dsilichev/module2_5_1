@@ -1,4 +1,7 @@
-export const addTodo = (text) => (dispatch) =>
+import { setIsLoading } from "./set-isloading";
+
+export const addTodo = (text) => (dispatch) => {
+  dispatch(setIsLoading(true));
   fetch('http://localhost:3005/todos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -14,4 +17,5 @@ export const addTodo = (text) => (dispatch) =>
         payload: response,
       })
     })
-    .finally(() => {});
+    .finally(() => { dispatch(setIsLoading(false)); });
+}

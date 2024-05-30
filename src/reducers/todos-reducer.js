@@ -1,4 +1,4 @@
-export const initialTodoState = {todos:[]};
+export const initialTodoState = { todos: [] };
 
 export const todosReducer = (state = initialTodoState, action) => {
   switch (action.type) {
@@ -15,7 +15,6 @@ export const todosReducer = (state = initialTodoState, action) => {
       };
     }
     case 'UPDATE_TODOS': {
-      console.log(action.payload);
       return {
         ...state,
         todos: state.todos.map((todo) =>

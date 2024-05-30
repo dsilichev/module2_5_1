@@ -3,22 +3,21 @@ import styles from '../app.module.css';
 import _ from 'lodash';
 import { AppContext } from '../context';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTodos } from '../selectors';
-import { getTodos, updateLocalTodo, updateTodo, setTodos } from '../actions';
-import { useEffect } from 'react';
+import { selectTodos, selectIsLoading, selectIsUpdating, selectIsDeleting } from '../selectors';
+import { getTodos, updateLocalTodo, setTodos } from '../actions';
 
 export const TodoList = () => {
   const {
-    isLoading,
-    isUpdating,
-    isDeleting,
-
     handleDeleteTodo,
     handleUpdateTodo,
   } = useContext(AppContext);
+
   const dispatch = useDispatch();
 
   const todos = useSelector(selectTodos);
+  const isLoading = useSelector(selectIsLoading);
+  const isUpdating = useSelector(selectIsUpdating);
+  const isDeleting = useSelector(selectIsDeleting);
 
   const [updatingId, setUpdatingId] = useState('');
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
@@ -42,18 +41,11 @@ export const TodoList = () => {
     }
   };
 
-  const handleInputChange = (index, id, completed, text) => {
-    //const newTodos = [...todos];
-    //newTodos[index] = { id: id, text: text, completed: completed };
-    //setTodos([...newTodos]);
-    console.log(id, { text: text, completed: completed });
+  const handleInputChange = (id, completed, text) => {
     dispatch(updateLocalTodo(id, { text: text, completed: completed }));
   };
 
-  const handleCheckboxChange = (index, id, checked, text) => {
-    const newTodos = [...todos];
-    newTodos[index] = { id: id, text: text, completed: checked };
-    //setTodos([...newTodos]);
+  const handleCheckboxChange = (id, checked, text) => {
     handleUpdateTodo(id, { text: text, completed: checked });
   };
 
@@ -66,20 +58,16 @@ export const TodoList = () => {
       }
     });
     const sortedTodos = _.orderBy(todos, [sortBy.path], [sortBy.order]);
-    //setTodos([...sortedTodos]);
     dispatch(setTodos(sortedTodos));
   };
 
   const searchTodo = (value) => {
-    console.log('Value', value);
     if (value) {
       const newTodos = _.filter(todos, (todo) =>
         todo.text.toLowerCase().includes(value.toLowerCase()),
       );
-      //setTodos([...newTodos]);
       dispatch(setTodos(newTodos));
     } else {
-      //refreshTodos();
       dispatch(getTodos);
     }
   };
@@ -97,7 +85,6 @@ export const TodoList = () => {
 
   const resetSearchInput = () => {
     setInputSearchValue('');
-    //refreshTodos();
     dispatch(getTodos);
   };
 
@@ -125,7 +112,7 @@ export const TodoList = () => {
         {isLoading ? (
           <div className={styles.loader}></div>
         ) : (
-          todos.map((todo, index) => (
+          todos.map((todo) => (
             <li key={todo.id}>
               {todo.id === updatingId ? (
                 <>
@@ -133,23 +120,23 @@ export const TodoList = () => {
                     <input
                       value={todo.text}
                       onChange={({ target }) =>
-                        handleInputChange(index, todo.id, todo.completed, target.value)
+                        handleInputChange(todo.id, todo.completed, target.value)
                       }
-                      onKeyDown={(e) => {if (e.code === 'Enter') {handleUpdateField(todo.id, todo.text, todo.completed)}}}
+                      onKeyDown={(e) => { if (e.code === 'Enter') { handleUpdateField(todo.id, todo.text, todo.completed) } }}
                     ></input>
                   </div>
                   <div>
                     <button
                       className={styles.btn}
                       onClick={() => handleUpdateField(todo.id, todo.text, todo.completed)}
-                      disabled={isUpdating}
+
                     >
                       ✔️
                     </button>
                     <button
                       className={styles.btn}
-                      onClick={() => {setUpdatingId('')}}
-                      disabled={isDeleting}
+                      onClick={() => { setUpdatingId('') }}
+
                     >
                       🔙
                     </button>
@@ -163,7 +150,7 @@ export const TodoList = () => {
                       id={todo.id}
                       defaultChecked={todo.completed}
                       onChange={({ target }) =>
-                        handleCheckboxChange(index, todo.id, target.checked, todo.text)
+                        handleCheckboxChange(todo.id, target.checked, todo.text)
                       }
                     ></input>
                     <label htmlFor={todo.id}>{todo.text}</label>
