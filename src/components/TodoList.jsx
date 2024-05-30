@@ -46,7 +46,7 @@ export const TodoList = () => {
     //const newTodos = [...todos];
     //newTodos[index] = { id: id, text: text, completed: completed };
     //setTodos([...newTodos]);
-    //console.log(newTodos[index]);
+    console.log(id, { text: text, completed: completed });
     dispatch(updateLocalTodo(id, { text: text, completed: completed }));
   };
 
