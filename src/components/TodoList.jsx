@@ -84,8 +84,10 @@ export const TodoList = () => {
         todo.text.toLowerCase().includes(value.toLowerCase()),
       );
       //setTodos([...newTodos]);
+      dispatch(setTodos(newTodos));
     } else {
       //refreshTodos();
+      dispatch(getTodos);
     }
   };
   const debouncedSearchTodo = debounce(searchTodo, 300);
@@ -103,6 +105,7 @@ export const TodoList = () => {
   const resetSearchInput = () => {
     setInputSearchValue('');
     //refreshTodos();
+    dispatch(getTodos);
   };
 
 
