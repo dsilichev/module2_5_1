@@ -1,29 +1,24 @@
 {
   "todos": [
     {
-      "text": "Ерпро",
-      "completed": true,
+      "text": "todo 1",
+      "completed": false,
       "id": "Z70S3Xu"
     },
     {
-      "text": "Serty2",
+      "text": "todo 2",
       "completed": true,
       "id": "Ko7-_oD"
     },
     {
-      "text": "Www",
+      "text": "todo 3",
       "completed": false,
       "id": "CJukFrY"
     },
     {
-      "text": "New",
+      "text": "todo 4",
       "completed": false,
       "id": "vCiyyKA"
-    },
-    {
-      "text": "Fff",
-      "completed": false,
-      "id": "M3O27VW"
     }
   ]
 }

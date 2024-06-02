@@ -1,16 +1,11 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import styles from '../app.module.css';
 import _ from 'lodash';
-import { AppContext } from '../context';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectTodos, selectIsLoading, selectIsUpdating, selectIsDeleting } from '../selectors';
-import { getTodos, updateLocalTodo, setTodos } from '../actions';
+import { getTodos, updateLocalTodo, updateTodo, deleteTodo, setTodos } from '../actions';
 
 export const TodoList = () => {
-  const {
-    handleDeleteTodo,
-    handleUpdateTodo,
-  } = useContext(AppContext);
 
   const dispatch = useDispatch();
 
@@ -22,6 +17,14 @@ export const TodoList = () => {
   const [updatingId, setUpdatingId] = useState('');
   const [sortBy, setSortBy] = useState({ path: 'text', order: 'asc' });
   const [inputSearchValue, setInputSearchValue] = useState('');
+
+  const handleUpdateTodo = (id, data) => {
+    dispatch(updateTodo(id, data));
+  };
+
+  const handleDeleteTodo = (id) => {
+    dispatch(deleteTodo(id));
+  };
 
   function debounce(func, delay) {
     let timeoutId;
@@ -98,7 +101,7 @@ export const TodoList = () => {
           value={inputSearchValue}
           placeholder="Введите дело"
           onChange={({ target }) => searchInputChange(target.value)}
-        ></input>
+        />
         <button className={styles.btn} onClick={resetSearchInput}>
           ❌
         </button>
@@ -123,7 +126,7 @@ export const TodoList = () => {
                         handleInputChange(todo.id, todo.completed, target.value)
                       }
                       onKeyDown={(e) => { if (e.code === 'Enter') { handleUpdateField(todo.id, todo.text, todo.completed) } }}
-                    ></input>
+                    />
                   </div>
                   <div>
                     <button
@@ -148,11 +151,11 @@ export const TodoList = () => {
                     <input
                       type="checkbox"
                       id={todo.id}
-                      defaultChecked={todo.completed}
+                      checked={todo.completed}
                       onChange={({ target }) =>
                         handleCheckboxChange(todo.id, target.checked, todo.text)
                       }
-                    ></input>
+                    />
                     <label htmlFor={todo.id}>{todo.text}</label>
                   </div>
                   <div>
